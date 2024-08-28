@@ -1,0 +1,43 @@
+<email>
+    <mailto>
+        favazzicarmelo@gmail.com
+    </mailto>
+    <subject>
+        Notifica installazione ricambio
+    </subject>
+
+
+
+    <corpo>
+<html>
+<head></head>
+<body>
+<html lang="it">
+<head>
+</head>
+<body>
+    <div class="container" >
+        <div class="header">
+            Benvenuto nella nostra Newsletter!
+        </div>
+        <div style="color:red" class="content">
+            <p>Ciao [Nome],</p>
+            <p>Grazie per esserti iscritto alla nostra newsletter. Siamo entusiasti di tenerti aggiornato sulle nostre ultime novità e offerte esclusive.</p>
+            <p>Ti invitiamo a visitare il nostro sito web per scoprire di più sui nostri prodotti.</p>
+            <a href="https://www.tuosito.com" class="button">Visita il nostro sito</a>
+        </div>
+        <div class="footer">
+            <p>Ricevi questa email perché ti sei iscritto al nostro servizio.</p>
+            <p>Se desideri annullare l'iscrizione, clicca <a href="#">qui</a>.</p>
+        </div>
+    </div>
+</body>
+</html>
+</body>
+</html>
+    </corpo>
+
+
+
+    
+</email>

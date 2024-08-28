@@ -1,0 +1,49 @@
+<email>
+    <mailto>
+        favazzicarmelo@gmail.com,smerc.areatecnica@gmail.com,smesncrc@gmail.com
+    </mailto>
+    <subject>
+        Notifica Installazione Ricambio
+    </subject>
+
+
+
+    <body>
+--------------------------------------------------------------
+TECNICO
+--------------------------------------------------------------
+???
+
+--------------------------------------------------------------
+PUNTO VENDITA
+--------------------------------------------------------------
+???
+
+--------------------------------------------------------------
+RICAMBIO INSTALLATO 
+--------------------------------------------------------------
+ARTICOLO: ???
+SERIALE: ???
+
+--------------------------------------------------------------
+RICAMBIO RITIRATO: ???
+--------------------------------------------------------------
+ARTICOLO: ???
+SERIALE: ???
+
+--------------------------------------------------------------
+NOTE per il magazzino
+--------------------------------------------------------------
+1) Creare un DDT per lo scarico del ricambio sul 
+PV Indicato 
+2) Creare un Arrivo Merce per il ricambio che 
+rientra dallo stesso PV caricandolo sul magazzino 
+del tecnico
+
+
+    </body>
+
+
+
+    
+</email>
