@@ -78,7 +78,7 @@ class _puntoVenditaState extends State<puntoVendita> {
                       onChanged: (value) {
                         //var queried 
                         setState(() {
-                          widget.puntiVenditaQuery = widget.puntiVendita.where((element) => element.codDest!.startsWith(value) || value.isEmpty).toList();
+                          widget.puntiVenditaQuery = widget.puntiVendita.where((element) => element.codDest!.toLowerCase().startsWith(value.toLowerCase()) || element.citta!.toLowerCase().startsWith(value.toLowerCase()) || value.isEmpty).toList();
                         });
                       },
                       style: TextStyle(fontSize: 14),
