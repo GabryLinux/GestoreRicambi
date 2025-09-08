@@ -4,7 +4,6 @@ import 'package:appsme/DatiNotificaSpedizione.dart';
 import 'package:appsme/DatiPuntoVendita.dart';
 import 'package:appsme/DatiSpostaRicambio.dart';
 import 'package:appsme/main.dart';
-import 'package:appsme/widgets/RicezioneRicambi/EmailSendRicezioneRicambi.dart';
 import 'package:appsme/widgets/SpostaRicambi/CollegaRicambio/Collega.dart';
 import 'package:appsme/widgets/parser.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ class SenderFunctions {
   static Future<void> EmailInviaRicambiMagazzinoRC(BuildContext context) async {
     List<String> fotos = [];
     List<String> parole = [];
-    List<String> parsedXML = [];
     String noteVettore = await ParserText.getText("24");
     String utente =
         (await SharedPreferences.getInstance()).getString("User") ?? "";
@@ -36,6 +34,7 @@ class SenderFunctions {
     // CASO 1
     if (dati.vettoreCollega != null && puntoVendita.isEmpty) {
       String consegnaDirettaA = await ParserText.getText("25");
+      parole..add(consegnaDirettaA);
     }
     // CASO 2
     else if (dati.vettoreCollega != null && puntoVendita.isNotEmpty) {
@@ -77,11 +76,9 @@ class SenderFunctions {
   static Future<void> EmailSendRicezioneRicambi(BuildContext context) async {
     List<String> fotos = [];
     List<String> parole = [];
-    List<String> parsedXML = [];
     String utente =
         (await SharedPreferences.getInstance()).getString("User") ?? "";
     var dati = context.read<DatiInviaRicambiAMagazzinoRCProvider>();
-    String puntoVendita = context.read<DatiLuogoProvider>().luogo;
     String nome = dati.vettoreCollega != null
         ? (dati.vettoreCollega!.nome! + " " + dati.vettoreCollega!.cognome!)
         : "";
@@ -110,7 +107,7 @@ class SenderFunctions {
   static Future<void> EmailNotificaSpedizione(BuildContext context) async {
     List<String> fotos = [];
     List<String> parole = [];
-    List<String> parsedXML = [];
+
     String utente =
         (await SharedPreferences.getInstance()).getString("User") ?? "";
     var dati = context.read<DatiNotificaSpedizione>();

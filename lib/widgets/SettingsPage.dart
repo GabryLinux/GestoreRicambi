@@ -27,7 +27,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       var variab = prefs.getString('User');

@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:appsme/DatiInstallazioneRicambio.dart';
 import 'package:appsme/DatiInviaRicambiAMagazzinoRC.dart';
@@ -7,7 +6,6 @@ import 'package:appsme/DatiPuntoVendita.dart';
 import 'package:appsme/DatiSpostaRicambio.dart';
 import 'package:appsme/ResetDatiGenerali.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/PuntoVendita/puntoVenditaPage.dart';
-import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/RicambioInstallatoPage.dart';
 import 'package:appsme/widgets/InviaRicambiMagazzinoRC/InviaRicambiMagazzinoRC.dart';
 import 'package:appsme/widgets/NotificaSpedizione/NotificaSpedizione.dart';
 import 'package:appsme/widgets/RicezioneRicambi/RicezioneRicambiPage.dart';
@@ -64,8 +62,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   AlertDialog createDialog (BuildContext c) {
     return new AlertDialog(
       content: Text("Devi inserire il nome utente. Clicca sulla rotellina!"),
@@ -104,13 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         ));
   }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {

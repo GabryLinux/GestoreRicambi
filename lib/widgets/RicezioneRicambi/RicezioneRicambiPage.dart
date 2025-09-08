@@ -1,7 +1,6 @@
 import 'package:appsme/DatiInviaRicambiAMagazzinoRC.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/PhotoWidget.dart';
 import 'package:appsme/widgets/InviaMailPage/EmailSendPage.dart';
-import 'package:appsme/widgets/RicezioneRicambi/EmailSendRicezioneRicambi.dart';
 import 'package:appsme/widgets/SenderFunctions/SenderFunctions.dart';
 import 'package:appsme/widgets/parser.dart';
 import 'package:flutter/material.dart';

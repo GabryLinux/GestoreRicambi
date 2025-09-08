@@ -1,27 +1,12 @@
 
-import 'package:appsme/DatiInstallazioneRicambio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xml/xml.dart';
 
 class ParserText{
   static String txtPathRicambio = 'assets/text/fileRicambio.xml';
   static String txtPathRicambioSpostare = 'assets/text/fileRicambioSpostare.xml';
   static String placeholder = '???';
-
-  static Future<String> parserRicambio(List<String> arrTxtReplace) async{
-    var txtFile = await rootBundle.loadString(txtPathRicambio);
-    return parserText(arrTxtReplace, txtFile, '???');
-  }
-
-  static Future<String> parserRicambioSpostare(List<String> arrTxtReplace) async{
-    var txtFile = await rootBundle.loadString(txtPathRicambioSpostare);
-    return parserText(arrTxtReplace, txtFile, '???');
-  }
 
   static String parserText(List<String> arrTxtReplace, String txtFile, String placeholder) {
     int counter = 0;

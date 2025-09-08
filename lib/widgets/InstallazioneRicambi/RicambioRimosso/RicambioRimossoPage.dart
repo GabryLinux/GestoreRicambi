@@ -1,27 +1,17 @@
 import 'package:appsme/DatiInstallazioneRicambio.dart';
-import 'package:appsme/DatiPuntoVendita.dart';
-import 'package:appsme/main.dart';
-import 'package:appsme/widgets/InstallazioneRicambi/ImageRicambio.dart';
-import 'package:appsme/widgets/InstallazioneRicambi/InviaMail/InviaMail.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/BarcodeWidget.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/PhotoWidget.dart';
 import 'package:appsme/widgets/InviaMailPage/EmailSendPage.dart';
 import 'package:appsme/widgets/SenderFunctions/SenderFunctions.dart';
-import 'package:appsme/widgets/parser.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'package:xml/xml.dart';
 
 class RicambioRimossoPage extends StatefulWidget {
   RicambioRimossoPage({Key? key}) : super(key: key);
   late TextEditingController codice, Seriale;
   String text = "";
   int counter = 0;
-  final ImagePicker _picker = ImagePicker();
   bool check = true;
   List<String> parsedXML = []; //0: mailto, 1: subject, 2: body
   List<String> FotoPath = <String>[];

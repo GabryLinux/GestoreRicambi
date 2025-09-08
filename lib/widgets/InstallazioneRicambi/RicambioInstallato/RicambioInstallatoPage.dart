@@ -1,19 +1,14 @@
-import 'dart:io';
 
 import 'package:appsme/DatiInstallazioneRicambio.dart';
-import 'package:appsme/widgets/InstallazioneRicambi/ImageRicambio.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/BarcodeWidget.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/PhotoWidget.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/RicambioRimosso/RicambioRimossoPage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class RicambioInstallatoPage extends StatefulWidget {
   RicambioInstallatoPage({Key? key}) : super(key: key);
   late TextEditingController codice, Seriale;
-  final ImagePicker _picker = ImagePicker();
   bool check = false;
   int counter = 0;
   List<String> FotoPath = <String>[];
@@ -26,8 +21,6 @@ class _RicambioInstallatoPageState extends State<RicambioInstallatoPage> {
   var BracodeSeriale = BarcodeWidget(title: "Seriale");
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
     widget.codice = TextEditingController();
     widget.Seriale = TextEditingController();

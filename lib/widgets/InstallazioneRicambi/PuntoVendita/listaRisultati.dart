@@ -20,11 +20,9 @@ class _ListaRisultatiState extends State<ListaRisultati> {
   int _selectedIndex = -1;
   @override
   void initState() {
-    List<PuntoVendita> puntiV = [];
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       FirebaseFirestore.instance.collection('0').get().then((value) {
         var item = value.docs[1];
-        List<Map<String, dynamic>> itemJson = [];
         int i = 0;
         setState(() {
           while (item.data()[i.toString()] != null) {

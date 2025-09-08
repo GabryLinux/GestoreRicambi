@@ -1,31 +1,19 @@
-import 'package:appsme/DatiInstallazioneRicambio.dart';
 import 'package:appsme/DatiInviaRicambiAMagazzinoRC.dart';
 import 'package:appsme/DatiNotificaSpedizione.dart';
-import 'package:appsme/main.dart';
 import 'package:appsme/widgets/InserisciCollega/InserisciCollega.dart';
-import 'package:appsme/widgets/InstallazioneRicambi/ImageRicambio.dart';
-import 'package:appsme/widgets/InstallazioneRicambi/InviaMail/InviaMail.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/PuntoVendita/listaPage.dart';
-import 'package:appsme/widgets/InstallazioneRicambi/PuntoVendita/listaRisultati.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/PuntoVendita/puntoVendita.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/PhotoWidget.dart';
 import 'package:appsme/widgets/InviaMailPage/EmailSendPage.dart';
 import 'package:appsme/widgets/NotificaSpedizione/DatePicking.dart';
 import 'package:appsme/widgets/SenderFunctions/SenderFunctions.dart';
-import 'package:appsme/widgets/parser.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xml/xml.dart';
 
-import '../SpostaRicambi/CollegaRicambio/Collega.dart';
 
 class NotificaSpedizione extends StatefulWidget {
   NotificaSpedizione({super.key});
   late TextEditingController codice, Seriale;
-  final ImagePicker _picker = ImagePicker();
   bool vettoreCheck = false;
 
   int counter = 0;

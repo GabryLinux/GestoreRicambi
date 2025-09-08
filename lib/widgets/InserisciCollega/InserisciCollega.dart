@@ -21,7 +21,6 @@ class _InserisciCollegaState extends State<InserisciCollega> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       FirebaseFirestore.instance.collection('0').get().then((value) {
         var item = value.docs[0];
-        List<Map<String, dynamic>> itemJson = [];
         colleghi.add(Collega.NULL);
         int i = 0;
         while (item.data()[i.toString()] != null) {

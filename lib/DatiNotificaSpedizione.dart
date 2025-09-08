@@ -1,6 +1,5 @@
 import 'package:appsme/ResettableDati.dart';
 import 'package:appsme/widgets/SpostaRicambi/CollegaRicambio/Collega.dart';
-import 'package:flutter/material.dart';
 
 class DatiNotificaSpedizione extends ResettableDati {
   String _codiceSpostare = "";

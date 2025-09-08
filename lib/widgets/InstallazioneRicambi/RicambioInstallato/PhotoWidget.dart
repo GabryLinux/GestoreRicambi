@@ -28,9 +28,7 @@ class _PhotoWidgetState extends State<PhotoWidget> {
                   photo.name, widget.text + " ${widget.counter}.png");
               await photo.saveTo(path);
               setState(() {
-                if (photo.path != null) {
-                  widget.FotoPath.add(path);
-                }
+                widget.FotoPath.add(path);
               });
             },
             child: Container(

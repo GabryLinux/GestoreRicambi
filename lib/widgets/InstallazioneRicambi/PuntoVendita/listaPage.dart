@@ -1,7 +1,5 @@
-import 'package:appsme/DatiInstallazioneRicambio.dart';
 import 'package:appsme/DatiPuntoVendita.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/PuntoVendita/listaRisultati.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

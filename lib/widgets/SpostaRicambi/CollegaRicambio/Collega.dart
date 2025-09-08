@@ -25,7 +25,6 @@ class Collega{
 
   @override
   String toString() {
-    // TODO: implement toString
     return nome! + " " + cognome!;
   }
 }
