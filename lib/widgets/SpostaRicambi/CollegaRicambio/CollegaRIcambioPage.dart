@@ -1,3 +1,4 @@
+import 'package:appsme/widgets/InserisciCollega/InserisciCollega.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/InviaMail/InviaMail.dart';
 import 'package:appsme/widgets/SpostaRicambi/CollegaRicambio/Collega.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,20 +59,7 @@ class _CollegaRicambioState extends State<CollegaRicambio> {
                 Container(
                   padding: EdgeInsets.all(20),
                 ),
-                DropdownButton<String>(
-                    value: widget.dropdownValue,
-                    onChanged: (String? value) {
-                      setState(() {
-                        widget.dropdownValue = value!;
-                      });
-                    },
-                    hint: Text("Consegna al Collega"),
-                    items: widget.colleghi.map<DropdownMenuItem<String>>((Collega value) {
-                      return DropdownMenuItem<String>(
-                        value: value.nome! + " " + value.cognome!,
-                        child: Text(value.nome! + " " + value.cognome!),
-                      );
-                    }).toList())
+                InserisciCollega(text: "Invia a collega")
               ],
             ),
 

@@ -2,29 +2,24 @@ import 'package:appsme/ResettableDati.dart';
 import 'package:appsme/widgets/SpostaRicambi/CollegaRicambio/Collega.dart';
 import 'package:flutter/material.dart';
 
-class DatiSpostaRicambioProvider extends ResettableDati{
-    String _serialeSpostare = "";
+class DatiInviaRicambiAMagazzinoRCProvider extends ResettableDati{
+    String _luogoRitiro = "";
     String _codiceSpostare = "";
-    Collega? _consegnaCollega = null;
-    List<String> FotoRicambi = [];
+    Collega? _vettoreCollega;
+    List<String> FotoItem = [];
 
-    String get serialeSpostare => _serialeSpostare;
+    String get luogoRitiro => _luogoRitiro;
     String get codiceSpostare => _codiceSpostare;
-    Collega? get consegnaCollega => _consegnaCollega;
+    Collega? get vettoreCollega => _vettoreCollega;
 
     void addFotoRicambi(List<String> foto){
       for (var element in foto) {
-        FotoRicambi.add(element);
+        FotoItem.add(element);
       }
     }
 
     void removeFotoInstallati(int index){
-      FotoRicambi.removeAt(index);
-    }
-
-    void updateSerialeSpostare(String seriale){
-      _serialeSpostare = seriale;
-      notifyListeners();
+      FotoItem.removeAt(index);
     }
 
     void updateCodiceSpostare(String codice){
@@ -33,18 +28,16 @@ class DatiSpostaRicambioProvider extends ResettableDati{
     }
 
     void updateConsegnaCollega(Collega collega){
-      _consegnaCollega = collega;
+      _vettoreCollega = collega;
       notifyListeners();
     }
 
     @override
     void reset() {
-      _serialeSpostare = "";
+      _luogoRitiro = "";
       _codiceSpostare = "";
-      _consegnaCollega = null;
-      FotoRicambi.clear();
+      _vettoreCollega = null;
+      FotoItem = [];
       notifyListeners();
     }
-
-    
 }

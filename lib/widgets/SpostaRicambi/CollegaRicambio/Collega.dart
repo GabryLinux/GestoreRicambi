@@ -8,4 +8,24 @@ class Collega{
     nome = json['NOME'];
     cognome = json['COGNOME'];
   }
+
+  static Collega NULL = Collega(nome: "NESSUN COLLEGA", cognome: "");
+
+  static isNull(Collega? collega){
+    if(collega == null){
+      return true;
+    }else{
+      if(collega.nome == "NESSUN COLLEGA" && collega.cognome == ""){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return nome! + " " + cognome!;
+  }
 }

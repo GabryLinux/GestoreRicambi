@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:appsme/DatiInstallazioneRicambio.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/ImageRicambio.dart';
+import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/BarcodeWidget.dart';
+import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/PhotoWidget.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/RicambioRimosso/RicambioRimossoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +14,7 @@ class RicambioInstallatoPage extends StatefulWidget {
   RicambioInstallatoPage({Key? key}) : super(key: key);
   late TextEditingController codice, Seriale;
   final ImagePicker _picker = ImagePicker();
-  bool check = false; 
+  bool check = false;
   int counter = 0;
   List<String> FotoPath = <String>[];
   @override
@@ -20,6 +22,8 @@ class RicambioInstallatoPage extends StatefulWidget {
 }
 
 class _RicambioInstallatoPageState extends State<RicambioInstallatoPage> {
+  var BracodeCodice = BarcodeWidget(title: "Codice");
+  var BracodeSeriale = BarcodeWidget(title: "Seriale");
   @override
   void initState() {
     // TODO: implement initState
@@ -50,175 +54,12 @@ class _RicambioInstallatoPageState extends State<RicambioInstallatoPage> {
                       style:
                           TextStyle(fontSize: 28, fontWeight: FontWeight.w300),
                     ),
-                    Container(
-                      //BARCODE
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            child:
-                                Text("Codice", style: TextStyle(fontSize: 14)),
-                            padding: EdgeInsets.all(5),
-                          ),
-                          TextField(
-                            //TEXTINPUT
-                            controller: widget.codice,
-                            onChanged: ((value) {
-                              context
-                                        .read<
-                                            DatiInstallazioneRicambiProvider>()
-                                        .updateCodiceInstall(value);
-                            }),
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintStyle: TextStyle(fontSize: 14),
-                                hintText: 'Inserisci Codice'),
-                          ), //FINE TEXTINPUT
-                          OutlinedButton(
-                              onPressed: () async {
-                                var res = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SimpleBarcodeScannerPage(),
-                                    ));
-                                setState(() {
-                                  if (res is String) {
-                                    //debugPrint(res);
-                                    context
-                                        .read<
-                                            DatiInstallazioneRicambiProvider>()
-                                        .updateCodiceInstall(res);
-                                    widget.codice.text = res;
-                                  }
-                                });
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Scannerizza BARCODE",
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              ))
-                        ],
-                      ),
-                    ), //FINE BARCODE
-                    Container(
-                      //BARCODE
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            child:
-                                Text("Seriale", style: TextStyle(fontSize: 14)),
-                            padding: EdgeInsets.all(5),
-                          ),
-                          TextField(
-                            //TEXTINPUT
-                            controller: widget.Seriale,
-                            onChanged: ((value) {
-                              context
-                                        .read<
-                                            DatiInstallazioneRicambiProvider>()
-                                        .updateSerialeInstall(value);
-                            }),
-                            decoration: InputDecoration(
-                                hintStyle: TextStyle(fontSize: 14),
-                                border: OutlineInputBorder(),
-                                hintText: 'Inserisci Seriale'),
-                          ), //FINE TEXTINPUT
-                          OutlinedButton(
-                              onPressed: () async {
-                                var res = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SimpleBarcodeScannerPage(),
-                                    ));
-                                setState(() {
-                                  if (res is String) {
-                                    //debugPrint(res);
-                                    context
-                                        .read<
-                                            DatiInstallazioneRicambiProvider>()
-                                        .updateSerialeInstall(res);
-                                    widget.Seriale.text = res;
-                                  }
-                                });
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Scannerizza BARCODE",
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                     //FINE BARCODE
-                    Container(
-                      
-                      child: Column(
-                        children: [
-                          OutlinedButton(
-                            onPressed: () async {
-                              widget.counter++;
-                              final XFile? photo = await widget._picker
-                                  .pickImage(source: ImageSource.camera);
-                                  String path = photo!.path.replaceFirst(photo.name, "Ricambio Installato ${widget.counter}.png");
-                              await photo.saveTo(path);
-                              setState(() {
-                                if(photo.path != null){
-                                  widget.FotoPath.add(path);
-                                }
-                              });
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              width: double.infinity,
-                              height: 50,
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Scatta una foto del Ricambio",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            )),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            height: MediaQuery.of(context).size.height*0.20,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                color: Colors.grey.shade300
-                              )
-                            ),
-                            child: ListView.builder(
-                            itemCount: widget.FotoPath.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context,i){
-                              debugPrint(i.toString());
-                              return ImageRicambioItem(
-                                key: Key(i.toString()),
-                                Nome: i.toString(), 
-                                DeleteFunc: () {
-                                  setState(() {
-                                    widget.FotoPath.removeAt(i);
-                                  });
-                                }
-                              );
-                              //return Container();
-                            }),
-                          )
-                        ],
-                      ),
-                    )
+                    BracodeCodice, //FINE BARCODE
+                    BracodeSeriale, //FINE BARCODE
+                    PhotoWidget(
+                            title: "Scatta foto del Ricambio",
+                            text: "Ricambio Installato",
+                            FotoPath: widget.FotoPath)
                   ],
                 ),
               ),
@@ -226,53 +67,50 @@ class _RicambioInstallatoPageState extends State<RicambioInstallatoPage> {
             ],
           ),
         ),
-      floatingActionButton: 
-      Container(
-        height: 50,
-        width: 100,
+        floatingActionButton: Container(
+          height: 50,
+          width: 100,
           child: FloatingActionButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5)
-            ),
-          onPressed: () async {
-            if(widget.Seriale.text.isEmpty && widget.codice.text.isEmpty){
-              showDialog(
-                context: context, 
-                builder:  (context) {
-                  return AlertDialog(
-                    content: Text("Devi inserire il ricambio da installare"),
-                    actions: <Widget>[
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          textStyle: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        child: const Text('Chiudi'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                }
-              );
-            }else{
-              var dati =  context.read<DatiInstallazioneRicambiProvider>();
-              dati.addFotoInstallati(widget.FotoPath);
-              Navigator.of(context).push(
-                MaterialPageRoute(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+            onPressed: () async {
+              context
+                  .read<DatiInstallazioneRicambiProvider>()
+                  .updateCodiceInstall(BracodeCodice.getCodice);
+              context
+                  .read<DatiInstallazioneRicambiProvider>()
+                  .updateSerialeInstall(BracodeSeriale.getCodice);
+              if (BracodeSeriale.getCodice.isEmpty &&
+                  BracodeCodice.getCodice.isEmpty) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content:
+                            Text("Devi inserire il ricambio da installare"),
+                        actions: <Widget>[
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              textStyle: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            child: const Text('Chiudi'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    });
+              } else {
+                var dati = context.read<DatiInstallazioneRicambiProvider>();
+                dati.addFotoInstallati(widget.FotoPath);
+                Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => RicambioRimossoPage(),
-                )
-              );
-            }
-          },
-          child: Text(
-            "Avanti",
-            style: TextStyle(
-              fontSize: 14
-            )
+                ));
+              }
+            },
+            child: Text("Avanti", style: TextStyle(fontSize: 14)),
           ),
-        ),
-    )
-      );
+        ));
   }
 }

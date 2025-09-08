@@ -1,7 +1,12 @@
 import 'package:appsme/DatiInstallazioneRicambio.dart';
+import 'package:appsme/DatiInviaRicambiAMagazzinoRC.dart';
 import 'package:appsme/DatiSpostaRicambio.dart';
+import 'package:appsme/widgets/InserisciCollega/InserisciCollega.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/ImageRicambio.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/InviaMail/InviaMail.dart';
+import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/PhotoWidget.dart';
+import 'package:appsme/widgets/InviaMailPage/EmailSendPage.dart';
+import 'package:appsme/widgets/SenderFunctions/SenderFunctions.dart';
 import 'package:appsme/widgets/SpostaRicambi/CollegaRicambio/Collega.dart';
 import 'package:appsme/widgets/SpostaRicambi/CollegaRicambio/CollegaRIcambioPage.dart';
 import 'package:appsme/widgets/parser.dart';
@@ -17,9 +22,7 @@ import 'package:xml/xml.dart';
 class RicambioDaSpostare extends StatefulWidget {
   RicambioDaSpostare({Key? key}) : super(key: key);
   late TextEditingController codice, Seriale;
-  String? dropdownValue = null;
   String text = "";
-  List<Collega> colleghi = [];
   final ImagePicker _picker = ImagePicker();
   List<String> parsedXML = []; //0: mailto, 1: subject, 2: body
   bool check = false;
@@ -31,28 +34,10 @@ class RicambioDaSpostare extends StatefulWidget {
 
 class _RicambioDaSpostareState extends State<RicambioDaSpostare> {
 
-  var direzioneSpostamento = (String collega) => "INVIA A \n--------------------------------------------------------------\n$collega";
-
+  
+  InserisciCollega destinatarioWidget = InserisciCollega(text: "Consegna a", defaultValueSet: true,);
   @override
   void initState() {
-    // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      FirebaseFirestore.instance.collection('0').get().then((value) {
-        var item = value.docs[0];
-        List<Map<String, dynamic>> itemJson = [];
-
-        int i = 0;
-        while (item.data()[i.toString()] != null) {
-          if (item.data()[i.toString()]['NOME'] != "") {
-            //AGGIUNGO SOLO SE I CAMPI SONO PIENI
-            widget.colleghi.add(Collega.fromJson(item.data()[i.toString()]));
-          }
-          i++;
-        }
-        setState(() {});
-      });
-    });
-
     super.initState();
     widget.codice = TextEditingController();
     widget.Seriale = TextEditingController();
@@ -221,96 +206,23 @@ class _RicambioDaSpostareState extends State<RicambioDaSpostare> {
                       ),
                     ),
                     //FINE BARCODE
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                            width:
-                                (MediaQuery.of(context).size.width - 40) * 0.40,
-                            child: CheckboxListTile(
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 3, vertical: 5),
-                                title: Text("Invia a Collega", style: TextStyle(fontSize: 14),),
-                                value: widget.check,
-                                onChanged: ((value) {
-                                  setState(() {
-                                    widget.check = value!;
-                                  });
-                                }))),
-                        Visibility(
-                            visible: widget.check,
-                            child: DropdownButton<String>(
-                                value: widget.dropdownValue,
-                                onChanged: (String? value) {
-                                  context
-                                      .read<DatiSpostaRicambioProvider>()
-                                      .updateConsegnaCollega(value!);
-                                  setState(() {
-                                    widget.dropdownValue = value;
-                                  });
-                                },
-                                hint: Text("Consegna a"),
-                                items: widget.colleghi
-                                    .map<DropdownMenuItem<String>>(
-                                        (Collega value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value.nome! + " " + value.cognome!,
-                                    child: Text(
-                                        value.nome! + " " + value.cognome!),
-                                  );
-                                }).toList())),
-                      ],
+                    Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 5, top: 10),
+                    child: Text(
+                      "Invia a Collega",
+                      style:
+                          TextStyle(fontSize: 14),
                     ),
+                  ),
+                  destinatarioWidget,
+                ],
+              ),
 
-                    Container(
-                      child: Column(
-                        children: [
-                          OutlinedButton(
-                              onPressed: () async {
-                                final XFile? photo = await widget._picker
-                                    .pickImage(source: ImageSource.camera);
-                                setState(() {
-                                  if (photo?.path != null) {
-                                    widget.FotoPath.add(photo!.path);
-                                  }
-                                });
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                width: double.infinity,
-                                height: 50,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Scatta una foto del Ricambio",
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              )),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            height: MediaQuery.of(context).size.height * 0.20,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: Colors.grey.shade300)),
-                            child: ListView.builder(
-                                itemCount: widget.FotoPath.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, i) {
-                                  debugPrint(i.toString());
-                                  return ImageRicambioItem(
-                                      key: Key(i.toString()),
-                                      Nome: i.toString(),
-                                      DeleteFunc: () {
-                                        setState(() {
-                                          widget.FotoPath.removeAt(i);
-                                        });
-                                      });
-                                  //return Container();
-                                }),
-                          )
-                        ],
-                      ),
-                    ),
+                    PhotoWidget(title: "Scatta una foto del ricambio",
+                     text: "Ricambio da Spostare", FotoPath: widget.FotoPath)
                   ],
                 ),
               ),
@@ -327,46 +239,15 @@ class _RicambioDaSpostareState extends State<RicambioDaSpostare> {
               onPressed: () async {
                 var urlLauncher = '';
                 var dati = context.read<DatiSpostaRicambioProvider>();
+                dati.updateConsegnaCollega( destinatarioWidget.getCollega!);
                 List<String> parole = [];
-                final pref = await SharedPreferences.getInstance();
-                var utente = pref.getString("User");
-                parole
-                  ..add(utente!)
-                  ..add(dati.codiceSpostare)
-                  ..add(dati.serialeSpostare);
-                if(widget.check){
-                  parole.add(direzioneSpostamento(dati.consegnaCollega));
-                }else{
-                  parole.add(direzioneSpostamento("Magazzino Principale SME"));
-                }   
 
-                widget.FotoPath.addAll(dati.FotoRicambi);
+                dati.addFotoRicambi( widget.FotoPath);
                 widget.text = await ParserText.parserRicambioSpostare(parole);
-                var XML = XmlDocument.parse(widget.text)
-                    .children[0]
-                    .descendantElements;
-                for (var node in XML) {
-                  if (node.innerText != " ") {
-                    widget.parsedXML.add(node.innerText.trim());
-                  }
-                }
-                if (widget.parsedXML.isNotEmpty) {
-                  /*
-                  urlLauncher = 'mailto:${widget.parsedXML[0]}?subject=${widget.parsedXML[1]}&body=${widget.parsedXML[2].replaceAll(', ', '\n')}';
-                  launchUrl(Uri.parse(urlLauncher))
-                  .then(
-                    (value) {
-                      if(value){
-                        ScaffoldMessenger.of(context).showSnackBar(snackBarPos);
-                        Navigator.popUntil(context, ModalRoute.withName('/'));
-                      }
-                    }).onError(
-                      (error, stackTrace) {
-                        ScaffoldMessenger.of(context).showSnackBar(snackBarNeg(error.toString()));
-                      } );
-                    */
-                  await send();
-                }
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => EmailSendPage(
+                        sendFunction:
+                            SenderFunctions.EmailRicambioDaSpostare)));
               },
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
