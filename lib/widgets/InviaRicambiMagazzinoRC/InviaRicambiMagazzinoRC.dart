@@ -19,6 +19,10 @@ class InviaRicambiMagazzinoRC extends StatefulWidget {
 
   List<String> FotoPath = <String>[];
   PuntoVendita? selectedPuntoVendita;
+  InserisciCollega vettoreWidget = InserisciCollega(
+    text: "Consegna a",
+    defaultValueSet: true,
+  );
   @override
   State<InviaRicambiMagazzinoRC> createState() =>
       _InviaRicambiMagazzinoRCState();
@@ -27,7 +31,7 @@ class InviaRicambiMagazzinoRC extends StatefulWidget {
 class _InviaRicambiMagazzinoRCState extends State<InviaRicambiMagazzinoRC> {
   List<String> parsedXML = []; //0: mailto, 1: subject, 2: body
   List<String> FotoPath = <String>[];
-  InserisciCollega vettoreWidget = InserisciCollega(text: "Consegna a");
+
   bool luogoCheck = false;
 
   @override
@@ -46,23 +50,23 @@ class _InviaRicambiMagazzinoRCState extends State<InviaRicambiMagazzinoRC> {
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w300),
                     textAlign: TextAlign.center,
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 15)),
                 ],
               ),
-              CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 3, vertical: 5),
-                  title: Text(
-                    "Invia a Collega",
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 5),
+                    child: Text(
+                      "Seleziona Vettore",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                    ),
                   ),
-                  value: widget.vettoreCheck,
-                  onChanged: ((value) {
-                    setState(() {
-                      widget.vettoreCheck = value!;
-                    });
-                  })),
-              Visibility(visible: widget.vettoreCheck, child: vettoreWidget),
+                  widget.vettoreWidget,
+                ],
+              ),
               CheckboxListTile(
                 controlAffinity: ListTileControlAffinity.leading,
                 contentPadding:
@@ -98,7 +102,7 @@ class _InviaRicambiMagazzinoRCState extends State<InviaRicambiMagazzinoRC> {
               var dati = context.read<DatiInviaRicambiAMagazzinoRCProvider>();
               context
                   .read<DatiInviaRicambiAMagazzinoRCProvider>()
-                  .updateConsegnaCollega(vettoreWidget.getCollega!);
+                  .updateConsegnaCollega(widget.vettoreWidget.getCollega!);
               dati.addFotoRicambi(widget.FotoPath);
               if (luogoCheck) {
                 Navigator.of(context).push(MaterialPageRoute(
