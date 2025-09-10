@@ -19,17 +19,15 @@ class SenderFunctions {
         (await SharedPreferences.getInstance()).getString("User") ?? "";
     var dati = context.read<DatiInviaRicambiAMagazzinoRCProvider>();
     String puntoVendita = context.read<DatiLuogoProvider>().luogo;
-    String nome = dati.vettoreCollega != null
-        ? (dati.vettoreCollega!.nome! + " " + dati.vettoreCollega!.cognome!)
-        : "";
+    String nome = dati.vettoreCollega.toString();
 
     final List<String> FotoPath = dati.FotoItem;
 
     parole
       ..add(utente)
       ..add(nome)
-      ..add(nome)
-      ..add(nome);
+      ..add(dati.vettoreCollega!.telefono ?? "")
+      ..add(dati.vettoreCollega!.email ?? "");
 
     // CASO 1
     if (dati.vettoreCollega != null && puntoVendita.isEmpty) {
@@ -57,14 +55,14 @@ class SenderFunctions {
     parole.add(noteVettore);
     fotos..addAll(dati.FotoItem);
     String rawBody = await ParserText.getText("Body3");
-    String addresses =
-        "favazzicarmelo@gmail.com,smerc.areatecnica@gmail.com,smesncrc@gmail.com";
+    String TOAddr = await ParserText.getText("TOAddr3");
+    String CCAddr = await ParserText.getText("CCAddr3");
     String subject = await ParserText.getText("22");
     String destinazione = await ParserText.getText("23");
 
     String text = await ParserText.parserText(parole, rawBody, "???");
 
-    await ParserText().send(context, addresses, text,
+    await ParserText().send(context, TOAddr, CCAddr, text,
         subject + " " + utente + " " + destinazione, FotoPath);
 
     Navigator.pushAndRemoveUntil(
@@ -80,7 +78,7 @@ class SenderFunctions {
         (await SharedPreferences.getInstance()).getString("User") ?? "";
     var dati = context.read<DatiInviaRicambiAMagazzinoRCProvider>();
     String nome = dati.vettoreCollega != null
-        ? (dati.vettoreCollega!.nome! + " " + dati.vettoreCollega!.cognome!)
+        ? (dati.vettoreCollega.toString())
         : "";
 
     final List<String> FotoPath = dati.FotoItem;
@@ -88,18 +86,18 @@ class SenderFunctions {
     parole
       ..add(utente)
       ..add(nome)
-      ..add(nome)
-      ..add(nome);
+      ..add(dati.vettoreCollega!.telefono ?? "")
+      ..add(dati.vettoreCollega!.email ?? "");
 
     fotos..addAll(dati.FotoItem);
     String rawBody = await ParserText.getText("Body4");
-    String addresses =
-        "favazzicarmelo@gmail.com,smerc.areatecnica@gmail.com,smesncrc@gmail.com";
+    String TOAddr = await ParserText.getText("TOAddr4");
+    String CCAddr = await ParserText.getText("CCAddr4");
     String subject = await ParserText.getText("41");
     subject = ParserText.parserText([utente], subject, "???");
     String text = await ParserText.parserText(parole, rawBody, "???");
 
-    await ParserText().send(context, addresses, text, subject, FotoPath);
+    await ParserText().send(context, TOAddr, CCAddr, text, subject, FotoPath);
 
     Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
   }
@@ -117,9 +115,7 @@ class SenderFunctions {
 
     parole
       ..add(utente)
-      ..add(dati.destinatarioCollega!.nome! +
-          " " +
-          dati.destinatarioCollega!.cognome!);
+      ..add(dati.destinatarioCollega.toString());
 
     if (Collega.isNull(dati.vettoreCollega)) {
       String text1 = await ParserText.getText("51");
@@ -129,9 +125,9 @@ class SenderFunctions {
         ..add("");
     } else {
       parole
-        ..add(dati.vettoreCollega!.nome! + " " + dati.vettoreCollega!.cognome!)
-        ..add(dati.vettoreCollega!.nome! + " " + dati.vettoreCollega!.cognome!)
-        ..add(dati.vettoreCollega!.nome! + " " + dati.vettoreCollega!.cognome!);
+        ..add(dati.vettoreCollega.toString())
+        ..add(dati.vettoreCollega!.telefono ?? "")
+        ..add(dati.vettoreCollega!.email ?? "");
     }
     if (dati.dataSpedizioneSelezionata == true) {
       parole.add(
@@ -167,8 +163,8 @@ class SenderFunctions {
 
     fotos..addAll(dati.FotoItem);
     String rawBody = await ParserText.getText("Body5");
-    String addresses =
-        "favazzicarmelo@gmail.com,smerc.areatecnica@gmail.com,smesncrc@gmail.com";
+    String TOAddr = await ParserText.getText("TOAddr5");
+    String CCAddr = await ParserText.getText("CCAddr5");
     String subject = await ParserText.getText("50");
     subject = ParserText.parserText([
       utente,
@@ -176,14 +172,13 @@ class SenderFunctions {
     ], subject, "???");
     String text = await ParserText.parserText(parole, rawBody, "???");
 
-    await ParserText().send(context, addresses, text, subject, FotoPath);
+    await ParserText().send(context, TOAddr, CCAddr, text, subject, FotoPath);
 
     Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
   }
 
   static Future<void> EmailRicambioDaSpostare(BuildContext context) async {
-    String addresses =
-        "favazzicarmelo@gmail.com,smerc.areatecnica@gmail.com,smesncrc@gmail.com";
+    
     String subject = "NOTIFICA SPOSTAMENTO RICAMBIO";
     var dati = context.read<DatiSpostaRicambioProvider>();
     var direzioneSpostamento = (String collega) =>
@@ -202,8 +197,10 @@ class SenderFunctions {
     }
     final List<String> FotoPath = dati.FotoRicambi;
     String rawBody = await ParserText.getText("Body2");
+    String TOAddr = await ParserText.getText("TOAddr2");
+    String CCAddr = await ParserText.getText("CCAddr2");
     rawBody = ParserText.parserText(parole, rawBody, "???");
-    await ParserText().send(context, addresses, rawBody, subject, FotoPath);
+    await ParserText().send(context, TOAddr, CCAddr, rawBody, subject, FotoPath);
 
     Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
   }
@@ -237,10 +234,10 @@ class SenderFunctions {
       ..addAll(dati.FotoRimossi);
     String rawBody = await ParserText.getText("Body1");
     rawBody = ParserText.parserText(parole, rawBody, "???");
-    String addresses =
-        "favazzicarmelo@gmail.com,smerc.areatecnica@gmail.com,smesncrc@gmail.com";
+    String TOAddr = await ParserText.getText("TOAddr1");
+    String CCAddr = await ParserText.getText("CCAddr1");
     String subject = "Notifica Installazione Ricambio";
-    await ParserText().send(context, addresses, rawBody, subject, fotos);
+    await ParserText().send(context, TOAddr, CCAddr, rawBody, subject, fotos);
 
     Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
   }

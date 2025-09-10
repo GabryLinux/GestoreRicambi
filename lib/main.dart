@@ -1,9 +1,9 @@
-
 import 'package:appsme/DatiInstallazioneRicambio.dart';
 import 'package:appsme/DatiInviaRicambiAMagazzinoRC.dart';
 import 'package:appsme/DatiNotificaSpedizione.dart';
 import 'package:appsme/DatiPuntoVendita.dart';
 import 'package:appsme/DatiSpostaRicambio.dart';
+import 'package:appsme/DatiUtente.dart';
 import 'package:appsme/ResetDatiGenerali.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/PuntoVendita/puntoVenditaPage.dart';
 import 'package:appsme/widgets/InviaRicambiMagazzinoRC/InviaRicambiMagazzinoRC.dart';
@@ -20,21 +20,22 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   var providers = [
-  ChangeNotifierProvider(create: (_) => DatiInstallazioneRicambiProvider()),
-  ChangeNotifierProvider(create: (_) => DatiSpostaRicambioProvider()),
-  ChangeNotifierProvider(create: (_) => DatiInviaRicambiAMagazzinoRCProvider()),
-  ChangeNotifierProvider(create: (_) => DatiLuogoProvider()),
-  ChangeNotifierProvider(create: (_) => DatiNotificaSpedizione()),
-  // se ResetDatiGenerali ha bisogno di accedere agli altri provider
-  // puoi passarglieli tramite context.read all'interno del suo costruttore
-  ChangeNotifierProvider(create: (_) => ResetDatiGenerali()),
-];
+    ChangeNotifierProvider(create: (_) => DatiInstallazioneRicambiProvider()),
+    ChangeNotifierProvider(create: (_) => DatiSpostaRicambioProvider()),
+    ChangeNotifierProvider(
+        create: (_) => DatiInviaRicambiAMagazzinoRCProvider()),
+    ChangeNotifierProvider(create: (_) => DatiLuogoProvider()),
+    ChangeNotifierProvider(create: (_) => DatiNotificaSpedizione()),
+    // se ResetDatiGenerali ha bisogno di accedere agli altri provider
+    // puoi passarglieli tramite context.read all'interno del suo costruttore
+    ChangeNotifierProvider(create: (_) => ResetDatiGenerali()),
+    ChangeNotifierProvider(create: (_) => DatiUtente()),
+  ];
   runApp(MultiProvider(
     providers: providers,
     child: const MyApp(),
   ));
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -53,16 +54,15 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
-  String errorMsg = "";
-  String? nomeUtente;
-  int tipoUtente = 10000;
-  bool flag = false;
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  AlertDialog createDialog (BuildContext c) {
+  String? nomeUtente = "";
+  int tipoUtente = 1000;
+
+  AlertDialog createDialog(BuildContext c) {
     return new AlertDialog(
       content: Text("Devi inserire il nome utente. Clicca sulla rotellina!"),
       actions: <Widget>[
@@ -77,15 +77,20 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
     );
-  }   
+  }
 
-  OutlinedButton createButton (String text, Widget w) {
+  OutlinedButton createButton(String text, Widget w) {
     return OutlinedButton(
         onPressed: () async {
-          final SharedPreferences prefs =
-              await SharedPreferences.getInstance();
-          var variab = prefs.getString('User');
-          if (variab == null || variab.isEmpty) {
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          var pin = prefs.getString('PIN');
+          var user = prefs.getString('User');
+          var type = prefs.getInt('TipoUtente');
+          if (user == null ||
+              user.isEmpty ||
+              pin == null ||
+              pin.isEmpty ||
+              type == null) {
             showDialog(
                 context: context, builder: (context) => createDialog(context));
           } else {
@@ -100,25 +105,26 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         ));
   }
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      var variab = prefs.getString('User');
-      widget.tipoUtente = int.tryParse(prefs.getString('TipoUtente') ?? '') ?? 1000;
-      if (variab != null) {
+      setState(() {
+        nomeUtente = prefs.getString('User');
+        tipoUtente = prefs.getInt('TipoUtente') ?? 1000;
+      });
+      debugPrint("NOME UTENTE: $nomeUtente");
+      debugPrint("TIPO UTENTE: $tipoUtente");
+      context.read<DatiUtente>().addListener(() {
+        debugPrint("UPDATE!");
         setState(() {
-          widget.errorMsg =
-              "Attenzione! Clicca sulla rotellina per inserire il nome utente";
-          widget.flag = true;
+          nomeUtente = prefs.getString('User');
+          tipoUtente = prefs.getInt('TipoUtente') ?? 1000;
+          debugPrint("NOME UTENTE: $nomeUtente");
+          debugPrint("TIPO UTENTE: $tipoUtente");
         });
-      } else {
-        setState(() {
-          widget.errorMsg =
-              "Attenzione! Clicca sulla rotellina per inserire il nome utente";
-          widget.flag = false;
-        });
-      }
+      });
     });
     super.initState();
   }
@@ -149,18 +155,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 Container(
                   margin: EdgeInsets.all(10),
                 ),
-                
+
                 createButton("Installazione Ricambio", puntoVendita()),
                 Padding(padding: EdgeInsets.symmetric(vertical: 10)),
                 createButton("Ricambio da Spostare", RicambioDaSpostare()),
                 Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                if(widget.tipoUtente < 2) ...[
-                  createButton("Invia Ricambi a Magazzino RC", InviaRicambiMagazzinoRC()),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                  createButton("Ricezione Ricambi", RicezioneRicambiPage()),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                ],
-                if (widget.tipoUtente < 1) ...[
+                createButton(
+                    "Invia Ricambi a Magazzino RC", InviaRicambiMagazzinoRC()),
+                Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                createButton("Ricezione Ricambi", RicezioneRicambiPage()),
+                Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                if (tipoUtente < 1) ...[
                   createButton("Notifica Spedizione", NotificaSpedizione()),
                 ]
               ],
@@ -171,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   children: [
                     Text(
-                      "Created by Gabriele Favazzi, v1.1.4",
+                      "Created by Gabriele Favazzi, v2.0.0",
                       style: TextStyle(color: Colors.grey, fontSize: 16),
                     ),
                     Text(

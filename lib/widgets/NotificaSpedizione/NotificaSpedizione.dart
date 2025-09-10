@@ -1,3 +1,4 @@
+
 import 'package:appsme/DatiInviaRicambiAMagazzinoRC.dart';
 import 'package:appsme/DatiNotificaSpedizione.dart';
 import 'package:appsme/widgets/InserisciCollega/InserisciCollega.dart';
@@ -9,7 +10,6 @@ import 'package:appsme/widgets/NotificaSpedizione/DatePicking.dart';
 import 'package:appsme/widgets/SenderFunctions/SenderFunctions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 
 class NotificaSpedizione extends StatefulWidget {
   NotificaSpedizione({super.key});
@@ -29,8 +29,11 @@ class NotificaSpedizioneState extends State<NotificaSpedizione> {
   List<String> FotoPath = <String>[];
 
   InserisciCollega destinatarioWidget = InserisciCollega(text: "Consegna a");
-  InserisciCollega vettoreWidget = InserisciCollega(text: "Vettore", defaultValueSet: true,);
-
+  InserisciCollega vettoreWidget = InserisciCollega(
+    text: "Vettore",
+    defaultValueSet: true,
+  );
+  DatePickingWidget date = DatePickingWidget();
   bool luogoCheck = false;
 
   @override
@@ -76,7 +79,7 @@ class NotificaSpedizioneState extends State<NotificaSpedizione> {
                   vettoreWidget,
                 ],
               ),
-              DatePickingWidget(),
+              date,
               CheckboxListTile(
                 controlAffinity: ListTileControlAffinity.leading,
                 contentPadding:
@@ -113,14 +116,14 @@ class NotificaSpedizioneState extends State<NotificaSpedizione> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
             child: Text(luogoCheck ? "Inserisci Luogo" : "Invia Mail"),
             onPressed: () async {
-              var dati = context.read<DatiInviaRicambiAMagazzinoRCProvider>();
-              dati.addFotoRicambi(widget.FotoPath);
-              context
-                  .read<DatiNotificaSpedizione>()
-                  .updateCollegaVettore(vettoreWidget.getCollega!);
-              context
-                  .read<DatiNotificaSpedizione>()
-                  .updateCollegaDestinatario(destinatarioWidget.getCollega!);
+              var dati = context.read<DatiNotificaSpedizione>();
+              dati.addFoto(widget.FotoPath);
+              dati.updateCollegaVettore(vettoreWidget.getCollega!);
+              dati.updateCollegaDestinatario(destinatarioWidget.getCollega!);
+              if (date.getDate != null) {
+                debugPrint("Data selezionata: ${date.getDate}");
+                dati.updateDataConsegna(date.getDate!);
+              }
               if (luogoCheck) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ListaPage(

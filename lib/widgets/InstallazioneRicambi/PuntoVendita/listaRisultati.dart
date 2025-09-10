@@ -21,17 +21,13 @@ class _ListaRisultatiState extends State<ListaRisultati> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      FirebaseFirestore.instance.collection('0').get().then((value) {
-        var item = value.docs[1];
-        int i = 0;
+      FirebaseFirestore.instance.collection('LOCALITA').get().then((value) {
+        int i = 0;        
         setState(() {
-          while (item.data()[i.toString()] != null) {
-            var puntoV = PuntoVendita.fromJson(item.data()[i.toString()]);
-            puntiVendita.add(puntoV);
-            puntiVenditaQuery.add(puntoV);
-            i++;
+          for (var element in value.docs) {
+            puntiVendita.add(PuntoVendita.fromJson(element.data()));
           }
-          debugPrint("Punti Vendita: ${puntiVendita.length}");
+          puntiVenditaQuery = puntiVendita.toList();
         });
       });
     });

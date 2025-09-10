@@ -1,9 +1,12 @@
 import 'package:appsme/widgets/SpostaRicambi/CollegaRicambio/Collega.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InserisciCollega extends StatefulWidget {
-  InserisciCollega({super.key, required this.text, this.defaultValueSet = false});
+  InserisciCollega(
+      {super.key, required this.text, this.defaultValueSet = false});
   final String text;
   @override
   State<InserisciCollega> createState() => _InserisciCollegaState();
@@ -19,19 +22,18 @@ class _InserisciCollegaState extends State<InserisciCollega> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      FirebaseFirestore.instance.collection('0').get().then((value) {
-        var item = value.docs[0];
-        colleghi.add(Collega.NULL);
-        int i = 0;
-        while (item.data()[i.toString()] != null) {
-          if (item.data()[i.toString()]['NOME'] != "") {
-            //AGGIUNGO SOLO SE I CAMPI SONO PIENI
-            colleghi.add(Collega.fromJson(item.data()[i.toString()]));
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      FirebaseFirestore.instance.collection('UTENTI').get().then((value) {
+        setState(() {
+          colleghi.add(Collega.NULL);
+          for (var element in value.docs) {
+            var collega = Collega.fromJson(element.data());
+            colleghi.add(collega);
           }
-          i++;
-        }
-        debugPrint(colleghi.length.toString());
-        setState(() {});
+          
+          var variab = prefs.getString('User');
+          colleghi.removeWhere((element) => element.nome! + " " + element.cognome! == variab);
+        });
       });
     });
     if (widget.defaultValueSet) {
@@ -39,8 +41,6 @@ class _InserisciCollegaState extends State<InserisciCollega> {
     }
     super.initState();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 class DatePickingWidget extends StatefulWidget {
-  const DatePickingWidget({super.key});
-
+  DatePickingWidget({super.key});
+  DateTime? selectedDate;
+  bool isDateSelected = false;
   @override
   State<DatePickingWidget> createState() => _DatePickingWidgetState();
+
+  DateTime? get getDate => isDateSelected ? selectedDate : null;
 }
 
 class _DatePickingWidgetState extends State<DatePickingWidget> {
-  DateTime? selectedDate;
-  bool isDateSelected = false;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -19,27 +21,27 @@ class _DatePickingWidgetState extends State<DatePickingWidget> {
         CheckboxListTile(
           contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
           controlAffinity: ListTileControlAffinity.leading,
-          value: isDateSelected,
+          value: widget.isDateSelected,
           onChanged: (bool? value) {
             setState(() {
-              isDateSelected = value!;
+              widget.isDateSelected = value!;
             });
           },
           title: Text("Data Prevista Consegna"),
         ),
         Visibility(
-            visible: isDateSelected,
+            visible: widget.isDateSelected,
             child: OutlinedButton(
               onPressed: () {
                 showDatePicker(
                   context: context,
-                  initialDate: selectedDate ?? DateTime.now(),
+                  initialDate: widget.selectedDate ?? DateTime.now(),
                   firstDate: DateTime(2000),
                   lastDate: DateTime(2100),
                 ).then((pickedDate) {
                   if (pickedDate != null) {
                     setState(() {
-                      selectedDate = pickedDate;
+                      widget.selectedDate = pickedDate;
                     });
                   }
                 });
@@ -56,8 +58,8 @@ class _DatePickingWidgetState extends State<DatePickingWidget> {
                   Icon(Icons.calendar_today),
                   SizedBox(
                       width: 23), // distanza personalizzata tra icona e testo
-                  Text(selectedDate != null
-                      ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
+                  Text(widget.selectedDate != null
+                      ? "${widget.selectedDate!.day}/${widget.selectedDate!.month}/${widget.selectedDate!.year}"
                       : "Seleziona Data", style: TextStyle(fontSize: 16),),
                 ],
               ),

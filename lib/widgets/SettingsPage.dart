@@ -1,5 +1,7 @@
+import 'package:appsme/DatiUtente.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
@@ -30,7 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       var variab = prefs.getString('User');
-      var TipoUtente = prefs.getString('TipoUtente');
+      var TipoUtente = prefs.getInt('TipoUtente');
       widget.Nome.text = variab ?? "";
       if (TipoUtente != null) {
         widget.TipoUtente.text = getUserType(TipoUtente);
@@ -39,13 +41,13 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
   }
 
-  String getUserType(String type) {
+  String getUserType(int type) {
     switch (type) {
-      case '0':
+      case 0:
         return 'Magazzino';
-      case '1':
+      case 1:
         return 'Utente';
-      case '2':
+      case 2:
         return 'CapoArea';
       default:
         return '';
@@ -131,7 +133,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
             onPressed: () async {
               var Nome = "";
-              var TipoUtente = "";
+              var TipoUtente = 1000;
               var PIN = "";
               final SharedPreferences prefs =
                   await SharedPreferences.getInstance();
@@ -152,9 +154,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     .then((value) {
                   value.docs.forEach((element) {
                     if (element['PIN'] == widget.PIN.text) {
+                      debugPrint("User Found");
                       debugPrint(element['TipoUtente'].toString());
-                      Nome = element['Nome'] + " " + element['Cognome'];
-                      TipoUtente = element['TipoUtente'].toString();
+                      Nome = element['NOME'] + " " + element['COGNOME'];
+                      TipoUtente = element['TipoUtente'];
                       PIN = element['PIN'];
                       userFound = true;
                     }
@@ -165,12 +168,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 widget.PIN.text = PIN;
 
                 await prefs.setString("User", widget.Nome.text);
-                await prefs.setString("TipoUtente", TipoUtente);
+                await prefs.setInt("TipoUtente", TipoUtente);
                 await prefs.setString("PIN", widget.PIN.text);
 
-                if(userFound){
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp()));
-                }
+                context.read<DatiUtente>().updateNomeUtente(Nome);
+                context.read<DatiUtente>().updateTipoUtente(TipoUtente);
+                context.read<DatiUtente>().updatePinUtente(PIN);
 
                 ScaffoldMessenger.of(context).showSnackBar(userFound ? snackSuccess : snackError);
               }
