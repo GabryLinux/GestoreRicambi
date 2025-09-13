@@ -11,61 +11,77 @@ class DatePickingWidget extends StatefulWidget {
 }
 
 class _DatePickingWidgetState extends State<DatePickingWidget> {
-  
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        CheckboxListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-          controlAffinity: ListTileControlAffinity.leading,
-          value: widget.isDateSelected,
-          onChanged: (bool? value) {
-            setState(() {
-              widget.isDateSelected = value!;
-            });
-          },
-          title: Text("Data Prevista Consegna"),
-        ),
-        Visibility(
-            visible: widget.isDateSelected,
-            child: OutlinedButton(
-              onPressed: () {
-                showDatePicker(
-                  context: context,
-                  initialDate: widget.selectedDate ?? DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                ).then((pickedDate) {
-                  if (pickedDate != null) {
-                    setState(() {
-                      widget.selectedDate = pickedDate;
-                    });
-                  }
-                });
-              },
-              style: OutlinedButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 14, // padding interno del bottone
-                  vertical: 15,
-                ),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 7),
+            child: Text(
+              "Seleziona Data Spedizione",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+            ),
+          ),
+          Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+          Row(
+            children: [
+              Flexible(child: OutlinedButton(
+            onPressed: () {
+              showDatePicker(
+                context: context,
+                initialDate: widget.selectedDate ?? DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+              ).then((pickedDate) {
+                if (pickedDate != null) {
+                  setState(() {
+                    widget.selectedDate = pickedDate;
+                  });
+                }
+              });
+            },
+            style: OutlinedButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                horizontal: 14, // padding interno del bottone
+                vertical: 10,
               ),
-              child: Row(
-                
-                children: [
-                  Icon(Icons.calendar_today),
-                  SizedBox(
-                      width: 23), // distanza personalizzata tra icona e testo
-                  Text(widget.selectedDate != null
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.calendar_today, size: 20,),
+                SizedBox(
+                    width: 15), // distanza personalizzata tra icona e testo
+                Text(
+                  widget.selectedDate != null
                       ? "${widget.selectedDate!.day}/${widget.selectedDate!.month}/${widget.selectedDate!.year}"
-                      : "Seleziona Data", style: TextStyle(fontSize: 16),),
-                ],
+                      : "Nessuna Data",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          )),
+          Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                widget.selectedDate = null;
+              });
+            },
+            child: Text("Cancella"),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                horizontal: 0,
+                vertical: 15,
               ),
-            )
+            ),
           )
-      ],
+            ],
+          )
+        ],
+      ),
     );
   }
 }

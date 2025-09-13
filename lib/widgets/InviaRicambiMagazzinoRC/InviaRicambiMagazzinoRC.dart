@@ -100,9 +100,8 @@ class _InviaRicambiMagazzinoRCState extends State<InviaRicambiMagazzinoRC> {
             child: Text(luogoCheck ? "Inserisci Luogo" : "Invia Mail"),
             onPressed: () async {
               var dati = context.read<DatiInviaRicambiAMagazzinoRCProvider>();
-              context
-                  .read<DatiInviaRicambiAMagazzinoRCProvider>()
-                  .updateConsegnaCollega(widget.vettoreWidget.getCollega!);
+              dati.reset();
+              dati.updateConsegnaCollega(widget.vettoreWidget.getCollega!);
               dati.addFotoRicambi(widget.FotoPath);
               if (luogoCheck) {
                 Navigator.of(context).push(MaterialPageRoute(
