@@ -99,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
         child: Container(
+          alignment: Alignment.center,
           child: Text(
             text,
           ),
@@ -153,21 +154,33 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10),
+                  margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 20),
+                  child: Text(
+                  "Menu Principale",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+                ),
                 ),
 
-                createButton("Installazione Ricambio", puntoVendita()),
-                Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                createButton("Ricambio da Spostare", RicambioDaSpostare()),
-                Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                createButton(
-                    "Invia Ricambi a Magazzino RC", InviaRicambiMagazzinoRC()),
-                Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                createButton("Ricezione Ricambi", RicezioneRicambiPage()),
-                Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                if (tipoUtente < 1) ...[
-                  createButton("Notifica Spedizione", NotificaSpedizione()),
-                ]
+                // FINE: LOGO SUPERIORE //
+                
+                GridView(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 15,
+                      childAspectRatio: 3 / 1.5,
+                    ),
+                    shrinkWrap: true,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    children: [
+                      createButton("Installazione Ricambio", puntoVendita()),
+                      createButton("Ricambio da Spostare", RicambioDaSpostare()),
+                      createButton("Invia Ricambi a Magazzino RC", InviaRicambiMagazzinoRC()),
+                      createButton("Ricezione Ricambi", RicezioneRicambiPage()),
+                      if (tipoUtente < 1) ...[
+                        createButton("Notifica Spedizione", NotificaSpedizione()),
+                      ]
+                    ]),
               ],
             ),
             Container(
