@@ -24,9 +24,6 @@ class NotificaSpedizione extends StatefulWidget {
 }
 
 class NotificaSpedizioneState extends State<NotificaSpedizione> {
-  List<String> parsedXML = []; //0: mailto, 1: subject, 2: body
-  List<String> FotoPath = <String>[];
-
   InserisciCollega destinatarioWidget = InserisciCollega(text: "Consegna a");
   InserisciCollega vettoreWidget = InserisciCollega(
     text: "Vettore",
