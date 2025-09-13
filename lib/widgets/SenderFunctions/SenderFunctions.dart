@@ -77,17 +77,10 @@ class SenderFunctions {
     String utente =
         (await SharedPreferences.getInstance()).getString("User") ?? "";
     var dati = context.read<DatiInviaRicambiAMagazzinoRCProvider>();
-    String nome = dati.vettoreCollega != null
-        ? (dati.vettoreCollega.toString())
-        : "";
 
     final List<String> FotoPath = dati.FotoItem;
 
-    parole
-      ..add(utente)
-      ..add(nome)
-      ..add(dati.vettoreCollega!.telefono ?? "")
-      ..add(dati.vettoreCollega!.email ?? "");
+    parole.add(utente);
 
     fotos..addAll(dati.FotoItem);
     String rawBody = await ParserText.getText("Body4");
@@ -178,7 +171,6 @@ class SenderFunctions {
   }
 
   static Future<void> EmailRicambioDaSpostare(BuildContext context) async {
-    
     String subject = "NOTIFICA SPOSTAMENTO RICAMBIO";
     var dati = context.read<DatiSpostaRicambioProvider>();
     var direzioneSpostamento = (String collega) =>
@@ -200,7 +192,8 @@ class SenderFunctions {
     String TOAddr = await ParserText.getText("TOAddr2");
     String CCAddr = await ParserText.getText("CCAddr2");
     rawBody = ParserText.parserText(parole, rawBody, "???");
-    await ParserText().send(context, TOAddr, CCAddr, rawBody, subject, FotoPath);
+    await ParserText()
+        .send(context, TOAddr, CCAddr, rawBody, subject, FotoPath);
 
     Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
   }
