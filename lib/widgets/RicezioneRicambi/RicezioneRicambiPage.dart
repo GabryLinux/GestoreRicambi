@@ -7,14 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RicezioneRicambiPage extends StatefulWidget {
-  const RicezioneRicambiPage({super.key});
-
+  RicezioneRicambiPage({super.key});
+  List<String> FotoPath = <String>[];
   @override
   State<RicezioneRicambiPage> createState() => _RicezioneRicambiPageState();
 }
 
 class _RicezioneRicambiPageState extends State<RicezioneRicambiPage> {
-  List<String> FotoPath = <String>[];
   String text = "";
 
   @override
@@ -46,7 +45,7 @@ class _RicezioneRicambiPageState extends State<RicezioneRicambiPage> {
               Padding(padding: EdgeInsets.all(15)),
               Text(text, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300)),
               Padding(padding: EdgeInsets.all(20)),
-              PhotoWidget(title: "Scatta foto al materiale", text: "Foto Materiale", FotoPath: FotoPath)
+              PhotoWidget(title: "Scatta foto al materiale", text: "Foto Materiale", FotoPath: widget.FotoPath)
             ],
           ),
         ),
@@ -58,7 +57,26 @@ class _RicezioneRicambiPageState extends State<RicezioneRicambiPage> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
             child: Text("Invia Mail"),
             onPressed: () async {
-              context.read<DatiInviaRicambiAMagazzinoRCProvider>().addFotoRicambi(FotoPath);
+              if (widget.FotoPath.isEmpty) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Errore"),
+                        content: Text("Devi inserire almeno una foto!"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("OK"),
+                          ),
+                        ],
+                      );
+                    });
+                return;
+              }
+              context.read<DatiInviaRicambiAMagazzinoRCProvider>().addFotoRicambi(widget.FotoPath);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => EmailSendPage(sendFunction: SenderFunctions.EmailSendRicezioneRicambi),
