@@ -1,4 +1,3 @@
-
 import 'package:appsme/DatiInviaRicambiAMagazzinoRC.dart';
 import 'package:appsme/DatiNotificaSpedizione.dart';
 import 'package:appsme/widgets/InserisciCollega/InserisciCollega.dart';
@@ -117,6 +116,7 @@ class NotificaSpedizioneState extends State<NotificaSpedizione> {
             child: Text(luogoCheck ? "Inserisci Luogo" : "Invia Mail"),
             onPressed: () async {
               var dati = context.read<DatiNotificaSpedizione>();
+              dati.reset();
               dati.addFoto(widget.FotoPath);
               dati.updateCollegaVettore(vettoreWidget.getCollega!);
               dati.updateCollegaDestinatario(destinatarioWidget.getCollega!);
