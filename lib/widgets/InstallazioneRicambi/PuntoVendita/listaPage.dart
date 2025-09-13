@@ -58,6 +58,7 @@ class _ListaPageState extends State<ListaPage> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
+                        title: Text("Errore"),
                         content: Text("Devi scegliere almeno un punto vendita"),
                         actions: <Widget>[
                           TextButton(
