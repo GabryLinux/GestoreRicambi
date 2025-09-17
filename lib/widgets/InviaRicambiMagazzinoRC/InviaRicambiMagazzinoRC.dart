@@ -21,7 +21,7 @@ class InviaRicambiMagazzinoRC extends StatefulWidget {
   PuntoVendita? selectedPuntoVendita;
   InserisciCollega vettoreWidget = InserisciCollega(
     text: "Consegna a",
-    defaultValueSet: true,
+    defaultValueSet: false,
   );
   @override
   State<InviaRicambiMagazzinoRC> createState() =>
