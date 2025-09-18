@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.appsme">
    <application
-        android:label="Gestore Ricambi"
+        android:label="Gestore Ricambi SME"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
