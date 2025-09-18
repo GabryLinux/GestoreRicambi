@@ -32,6 +32,9 @@ class ParserText {
 
   Future<void> send(BuildContext context, String TOAddr, String CCAddr,
       String body, String subject, List<String> attachmentPaths) async {
+    String footnote = await ParserText.getFootnote();
+    body += "\n\n" + footnote;
+
     List<String> TOaddresses = [];
     TOaddresses.addAll(TOAddr.split(","));
     List<String> CCaddresses = [];
@@ -67,6 +70,18 @@ class ParserText {
     await FirebaseFirestore.instance
         .collection("TESTI")
         .doc(ID)
+        .get()
+        .then((value) {
+      text = value.data()?['Testo'];
+    });
+    return text;
+  }
+
+  static Future<String> getFootnote() async {
+    String text = "";
+    await FirebaseFirestore.instance
+        .collection("TESTI")
+        .doc("11")
         .get()
         .then((value) {
       text = value.data()?['Testo'];
