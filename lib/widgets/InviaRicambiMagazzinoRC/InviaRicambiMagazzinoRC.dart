@@ -1,4 +1,5 @@
 import 'package:appsme/DatiInviaRicambiAMagazzinoRC.dart';
+import 'package:appsme/widgets/ErrorMSG/ErrorMSG.dart';
 import 'package:appsme/widgets/InserisciCollega/InserisciCollega.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/PuntoVendita/listaPage.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/PuntoVendita/puntoVendita.dart';
@@ -21,7 +22,7 @@ class InviaRicambiMagazzinoRC extends StatefulWidget {
   PuntoVendita? selectedPuntoVendita;
   InserisciCollega vettoreWidget = InserisciCollega(
     text: "Consegna a",
-    defaultValueSet: false,
+    defaultValueSet: true,
   );
   @override
   State<InviaRicambiMagazzinoRC> createState() =>
@@ -101,6 +102,14 @@ class _InviaRicambiMagazzinoRCState extends State<InviaRicambiMagazzinoRC> {
             onPressed: () async {
               var dati = context.read<DatiInviaRicambiAMagazzinoRCProvider>();
               dati.reset();
+              if (Collega.isNull(widget.vettoreWidget.getCollega) && luogoCheck == false) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ErrorMSG(msg:"Devi scegliere almeno un vettore o Scegliere la località");
+                    });
+                return;
+              }
               dati.updateConsegnaCollega(widget.vettoreWidget.getCollega!);
               dati.addFotoRicambi(widget.FotoPath);
               if (luogoCheck) {
