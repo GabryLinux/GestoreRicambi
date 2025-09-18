@@ -5,6 +5,7 @@ import 'package:appsme/DatiPuntoVendita.dart';
 import 'package:appsme/DatiSpostaRicambio.dart';
 import 'package:appsme/DatiUtente.dart';
 import 'package:appsme/ResetDatiGenerali.dart';
+import 'package:appsme/widgets/ErrorMSG/ErrorMSG.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/PuntoVendita/puntoVenditaPage.dart';
 import 'package:appsme/widgets/InviaRicambiMagazzinoRC/InviaRicambiMagazzinoRC.dart';
 import 'package:appsme/widgets/NotificaSpedizione/NotificaSpedizione.dart';
@@ -62,21 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
   String? nomeUtente = "";
   int tipoUtente = 1000;
 
-  AlertDialog createDialog(BuildContext c) {
-    return new AlertDialog(
-      content: Text("Devi inserire il nome utente. Clicca sulla rotellina!"),
-      actions: <Widget>[
-        TextButton(
-          style: TextButton.styleFrom(
-            textStyle: Theme.of(context).textTheme.labelLarge,
-          ),
-          child: const Text('Chiudi'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
+  ErrorMSG createDialog(BuildContext c) {
+    return ErrorMSG(msg: "Devi fare il login per accedere a questa funzione. Clicca sulla rotellina!");
   }
 
   OutlinedButton createButton(String text, Widget w) {

@@ -1,4 +1,5 @@
 import 'package:appsme/DatiInviaRicambiAMagazzinoRC.dart';
+import 'package:appsme/widgets/ErrorMSG/ErrorMSG.dart';
 import 'package:appsme/widgets/InstallazioneRicambi/RicambioInstallato/PhotoWidget.dart';
 import 'package:appsme/widgets/InviaMailPage/EmailSendPage.dart';
 import 'package:appsme/widgets/SenderFunctions/SenderFunctions.dart';
@@ -61,18 +62,7 @@ class _RicezioneRicambiPageState extends State<RicezioneRicambiPage> {
                 showDialog(
                     context: context,
                     builder: (context) {
-                      return AlertDialog(
-                        title: Text("Errore"),
-                        content: Text("Devi inserire almeno una foto!"),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text("OK"),
-                          ),
-                        ],
-                      );
+                      return ErrorMSG(msg: "Devi scattare almeno una foto al materiale ricevuto");
                     });
                 return;
               }
