@@ -72,7 +72,7 @@ class _InviaRicambiMagazzinoRCState extends State<InviaRicambiMagazzinoRC> {
                 controlAffinity: ListTileControlAffinity.leading,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 3, vertical: 7),
-                title: Text("Aggiungi Luogo di Consegna"),
+                title: Text("Aggiungi Luogo/PV Fermo Deposito"),
                 value: luogoCheck,
                 onChanged: (bool? value) {
                   setState(() {
