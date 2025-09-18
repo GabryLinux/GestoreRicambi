@@ -153,6 +153,8 @@ class SenderFunctions {
       String text1 = await ParserText.getText("58");
       parole.add(text1);
     }
+    String text2 = await ParserText.getText("53");
+    parole.add(!Collega.isNull(dati.vettoreCollega) ? text2 : "");
 
     fotos..addAll(dati.FotoItem);
     String rawBody = await ParserText.getText("Body5");
