@@ -30,12 +30,12 @@ class SenderFunctions {
       ..add(dati.vettoreCollega!.email ?? "");
 
     // CASO 1
-    if (dati.vettoreCollega != null && puntoVendita.isEmpty) {
+    if (Collega.isNull(dati.vettoreCollega) && puntoVendita.isEmpty) {
       String consegnaDirettaA = await ParserText.getText("25");
       parole..add(consegnaDirettaA);
     }
     // CASO 2
-    else if (dati.vettoreCollega != null && puntoVendita.isNotEmpty) {
+    else if (!Collega.isNull(dati.vettoreCollega) && puntoVendita.isNotEmpty) {
       String text1 = await ParserText.getText("27");
       text1 = ParserText.parserText([puntoVendita], text1, "???");
 
@@ -44,7 +44,7 @@ class SenderFunctions {
       parole..add(text1 + "\n" + text2);
     }
     // CASO 3
-    else if (dati.vettoreCollega == null && puntoVendita.isNotEmpty) {
+    else if (Collega.isNull(dati.vettoreCollega) && puntoVendita.isNotEmpty) {
       String text1 = await ParserText.getText("27");
       text1 = ParserText.parserText([puntoVendita], text1, "???");
 
