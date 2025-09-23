@@ -109,6 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       debugPrint("NOME UTENTE: $nomeUtente");
       debugPrint("TIPO UTENTE: $tipoUtente");
+      context.read<ResetDatiGenerali>().resetAll(context);
       context.read<DatiUtente>().addListener(() {
         debugPrint("UPDATE!");
         setState(() {
