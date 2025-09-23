@@ -61,6 +61,7 @@ class SenderFunctions {
     String destinazione = await ParserText.getText("23");
 
     String text = await ParserText.parserText(parole, rawBody, "???");
+    CCAddr += ",${dati.vettoreCollega!.email ?? ""}";
 
     await ParserText().send(context, TOAddr, CCAddr, text,
         subject + " " + utente + " " + destinazione, FotoPath);
