@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ParserText {
   static String txtPathRicambio = 'assets/text/fileRicambio.xml';
@@ -79,6 +80,8 @@ class ParserText {
 
   static Future<String> getFootnote() async {
     String text = "";
+    final pref = await SharedPreferences.getInstance();
+    String VER = pref.getString('AppVersion') ?? "<ERROR>";
     await FirebaseFirestore.instance
         .collection("TESTI")
         .doc("11")
@@ -86,6 +89,6 @@ class ParserText {
         .then((value) {
       text = value.data()?['Testo'];
     });
-    return text;
+    return text+VER;
   }
 }

@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       title: 'SME APP',
       theme: ThemeData(
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
+  
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -62,6 +64,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String? nomeUtente = "";
   int tipoUtente = 1000;
+  final String VER = "2.0.0";
 
   ErrorMSG createDialog(BuildContext c) {
     return ErrorMSG(msg: "Devi fare il login per accedere a questa funzione. Clicca sulla rotellina!");
@@ -99,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('AppVersion', VER);
       setState(() {
         nomeUtente = prefs.getString('User');
         tipoUtente = prefs.getInt('TipoUtente') ?? 1000;
@@ -177,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   children: [
                     Text(
-                      "Created by Gabriele Favazzi, v2.0.0",
+                      "Created by Gabriele Favazzi, "+ VER,
                       style: TextStyle(color: Colors.grey, fontSize: 16),
                     ),
                     Text(
