@@ -123,7 +123,7 @@ class SenderFunctions {
         ..add(dati.vettoreCollega!.telefono ?? "")
         ..add(dati.vettoreCollega!.email ?? "");
     }
-    if (dati.dataSpedizioneSelezionata == true) {
+    if (dati.dataSpedizione != null) {
       parole.add(
           "${dati.dataSpedizione!.day}/${dati.dataSpedizione!.month}/${dati.dataSpedizione!.year}");
     } else {

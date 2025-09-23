@@ -117,10 +117,8 @@ class NotificaSpedizioneState extends State<NotificaSpedizione> {
               dati.addFoto(widget.FotoPath);
               dati.updateCollegaVettore(vettoreWidget.getCollega!);
               dati.updateCollegaDestinatario(destinatarioWidget.getCollega!);
-              if (date.getDate != null) {
-                debugPrint("Data selezionata: ${date.getDate}");
-                dati.updateDataConsegna(date.getDate!);
-              }
+              debugPrint("Data selezionata: ${date.getDate}");
+              dati.updateDataSpedizione(date.getDate);
               if (luogoCheck) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ListaPage(

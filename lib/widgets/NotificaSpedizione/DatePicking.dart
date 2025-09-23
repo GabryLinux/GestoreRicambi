@@ -7,7 +7,7 @@ class DatePickingWidget extends StatefulWidget {
   @override
   State<DatePickingWidget> createState() => _DatePickingWidgetState();
 
-  DateTime? get getDate => isDateSelected ? selectedDate : null;
+  DateTime? get getDate => selectedDate;
 }
 
 class _DatePickingWidgetState extends State<DatePickingWidget> {

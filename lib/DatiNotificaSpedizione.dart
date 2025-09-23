@@ -43,7 +43,7 @@ class DatiNotificaSpedizione extends ResettableDati {
     notifyListeners();
   }
 
-  void updateDataConsegna(DateTime data) {
+  void updateDataConsegna(DateTime? data) {
     _dataConsegna = data;
     notifyListeners();
   }
@@ -52,7 +52,7 @@ class DatiNotificaSpedizione extends ResettableDati {
     _dataSpedizioneSelezionata = selezionata;
     notifyListeners();
   }
-  void updateDataSpedizione(DateTime data) {
+  void updateDataSpedizione(DateTime? data) {
     _dataSpedizione = data;
     notifyListeners();
   }
